@@ -1,0 +1,25 @@
+name: docker build and push
+on:
+  push: branches[main,master]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+    - name: setup docker build x
+      uses: docker/buildx-actions@v3
+    - name: ologin to docker
+      uses: docker/login-actions@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }} 
+        password: ${{ secrets.DOCKERHUB_PASSWORD}}
+    - name: build anmd push
+      uses: docker/build-push-actions@v5
+      with:
+        context: .
+        push: ${{github.eventname!='pull_request'}}
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/app:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/app:${{ github.sha }}
