@@ -15,7 +15,7 @@ jobs:
 
       - name: Stylelint
         run: |
-          npm install -g stylelint stylelint-config-standard
+          npm install -g stylelint
           npx stylelint "**/*.css"
       - name: setup docker buildx
         uses: docker/setup-buildx-action@v3
